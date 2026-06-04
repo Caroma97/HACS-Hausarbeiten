@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.2] - 2026-06-04
+
+### Fixed
+- Übersicht-Gerät wird jetzt korrekt als eigenständiges Gerät in der HA-Geräteliste angezeigt und nicht mehr einem Aufgaben-Gerät zugeordnet
+
 ## [1.0.0] - 2026-06-03
 
 ### Added
