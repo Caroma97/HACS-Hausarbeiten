@@ -1,0 +1,124 @@
+{
+  "title": "Hausarbeiten",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Aufgaben-Einstellungen",
+        "description": "Grundkonfiguration der Hausarbeit",
+        "data": {
+          "calendar_summary": "Kalender-Stichwort",
+          "calendar_entity": "Kalender",
+          "event_days": "Fälligkeitsintervall (Tage)",
+          "skip_days": "Verschieben um Tage"
+        },
+        "data_description": {
+          "calendar_summary": "Bezeichnung der Aufgabe – wird als Kalender-Event-Titel und Notification-Tag verwendet.",
+          "calendar_entity": "Kalender, in dem Erledigungen protokolliert werden.",
+          "event_days": "Nach einer Erledigung wird der nächste Termin um diese Anzahl Tage verschoben.",
+          "skip_days": "Beim Überspringen wird der nächste Termin um diese Anzahl Tage verschoben."
+        }
+      },
+      "notification": {
+        "title": "Benachrichtigungs-Einstellungen",
+        "data": {
+          "notification_title": "Titel",
+          "notification_subject": "Kurznachricht",
+          "notification_message": "Detaillierte Nachricht",
+          "notification_channel": "Benachrichtigungskanal",
+          "notification_group": "Benachrichtigungsgruppe",
+          "notification_tag": "Tag",
+          "notification_mdi_icon": "MDI Icon",
+          "notification_visibility": "Sperrbildschirm-Sichtbarkeit",
+          "notification_alert_once": "Alert Once",
+          "notification_png_icon": "Nachrichten-Icon (Pfad)",
+          "notification_link": "Link",
+          "notification_script": "Benachrichtigungs-Skript"
+        },
+        "data_description": {
+          "notification_tag": "Leer lassen für automatisch (= Kalender-Stichwort). Muss eindeutig über alle Aufgaben sein.",
+          "notification_script": "Skript, das für die Benachrichtigung aufgerufen wird."
+        }
+      }
+    },
+    "error": {
+      "tag_not_unique": "Dieser Benachrichtigungs-Tag wird bereits von einer anderen Aufgabe verwendet. Bitte einen eindeutigen Tag wählen."
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "faellig": {
+        "name": "Fällig"
+      }
+    },
+    "sensor": {
+      "tage_seit_erledigung": {
+        "name": "Tage seit Erledigung"
+      },
+      "faellige_hausarbeiten": {
+        "name": "Fällige Hausarbeiten"
+      }
+    },
+    "button": {
+      "erledigt": {
+        "name": "Erledigt"
+      },
+      "ueberspringen": {
+        "name": "Überspringen"
+      },
+      "alle_pruefen": {
+        "name": "Alle prüfen"
+      },
+      "alle_benachrichtigen": {
+        "name": "Alle benachrichtigen"
+      }
+    },
+    "date": {
+      "naechste_faelligkeit": {
+        "name": "Nächste Fälligkeit"
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Aufgaben-Einstellungen",
+        "data": {
+          "calendar_summary": "Kalender-Stichwort",
+          "calendar_entity": "Kalender",
+          "event_days": "Fälligkeitsintervall (Tage)",
+          "skip_days": "Verschieben um Tage"
+        },
+        "data_description": {
+          "calendar_summary": "Bezeichnung der Aufgabe – wird als Kalender-Event-Titel und Notification-Tag verwendet.",
+          "calendar_entity": "Kalender, in dem Erledigungen protokolliert werden.",
+          "event_days": "Nach einer Erledigung wird der nächste Termin um diese Anzahl Tage verschoben.",
+          "skip_days": "Beim Überspringen wird der nächste Termin um diese Anzahl Tage verschoben."
+        }
+      },
+      "notification": {
+        "title": "Benachrichtigungs-Einstellungen",
+        "data": {
+          "notification_title": "Titel",
+          "notification_subject": "Kurznachricht",
+          "notification_message": "Detaillierte Nachricht",
+          "notification_channel": "Benachrichtigungskanal",
+          "notification_group": "Benachrichtigungsgruppe",
+          "notification_tag": "Tag",
+          "notification_mdi_icon": "MDI Icon",
+          "notification_visibility": "Sperrbildschirm-Sichtbarkeit",
+          "notification_alert_once": "Alert Once",
+          "notification_png_icon": "Nachrichten-Icon (Pfad)",
+          "notification_link": "Link",
+          "notification_script": "Benachrichtigungs-Skript"
+        },
+        "data_description": {
+          "notification_tag": "Leer lassen für automatisch (= Kalender-Stichwort). Muss eindeutig über alle Aufgaben sein.",
+          "notification_script": "Skript, das für die Benachrichtigung aufgerufen wird."
+        }
+      }
+    },
+    "error": {
+      "tag_not_unique": "Dieser Benachrichtigungs-Tag wird bereits von einer anderen Aufgabe verwendet. Bitte einen eindeutigen Tag wählen."
+    }
+  }
+}

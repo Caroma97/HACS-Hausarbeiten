@@ -1,0 +1,31 @@
+pruefen:
+  name: Fälligkeit prüfen
+  description: >
+    Prüft für konfigurierte Hausarbeiten, ob das Fälligkeitsdatum erreicht ist,
+    und sendet ggf. eine Benachrichtigung.
+  fields:
+    title:
+      name: Titel
+      description: >
+        Benachrichtigungs-Titel der Aufgabe, die geprüft werden soll.
+        Leer lassen, um alle konfigurierten Hausarbeiten zu prüfen.
+      required: false
+      example: "Badezimmer reinigen"
+      selector:
+        text: {}
+
+benachrichtigen:
+  name: Benachrichtigung erzwingen
+  description: >
+    Sendet die Benachrichtigung einer Hausarbeit unabhängig vom Fälligkeitsdatum
+    und setzt den Status auf fällig.
+  fields:
+    title:
+      name: Titel
+      description: >
+        Benachrichtigungs-Titel der Aufgabe, die ausgelöst werden soll.
+        Leer lassen, um alle konfigurierten Hausarbeiten zu benachrichtigen.
+      required: false
+      example: "Badezimmer reinigen"
+      selector:
+        text: {}

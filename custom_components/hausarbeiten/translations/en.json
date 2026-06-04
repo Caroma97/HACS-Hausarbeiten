@@ -1,0 +1,124 @@
+{
+  "title": "Hausarbeiten",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Task Settings",
+        "description": "Basic configuration for the chore",
+        "data": {
+          "calendar_summary": "Calendar keyword",
+          "calendar_entity": "Calendar",
+          "event_days": "Due interval (days)",
+          "skip_days": "Postpone by days"
+        },
+        "data_description": {
+          "calendar_summary": "Name of the task – used as calendar event title and notification tag.",
+          "calendar_entity": "Calendar where completions are logged.",
+          "event_days": "After completing, the next due date is shifted by this many days.",
+          "skip_days": "When skipping, the next due date is shifted by this many days."
+        }
+      },
+      "notification": {
+        "title": "Notification Settings",
+        "data": {
+          "notification_title": "Title",
+          "notification_subject": "Short message",
+          "notification_message": "Detailed message",
+          "notification_channel": "Notification channel",
+          "notification_group": "Notification group",
+          "notification_tag": "Tag",
+          "notification_mdi_icon": "MDI icon",
+          "notification_visibility": "Lock screen visibility",
+          "notification_alert_once": "Alert once",
+          "notification_png_icon": "Notification icon (path)",
+          "notification_link": "Link",
+          "notification_script": "Notification script"
+        },
+        "data_description": {
+          "notification_tag": "Leave empty for automatic (= calendar keyword). Must be unique across all tasks.",
+          "notification_script": "Script called for sending the notification."
+        }
+      }
+    },
+    "error": {
+      "tag_not_unique": "This notification tag is already used by another task. Please choose a unique tag."
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "faellig": {
+        "name": "Due"
+      }
+    },
+    "sensor": {
+      "tage_seit_erledigung": {
+        "name": "Days since completion"
+      },
+      "faellige_hausarbeiten": {
+        "name": "Due chores"
+      }
+    },
+    "button": {
+      "erledigt": {
+        "name": "Done"
+      },
+      "ueberspringen": {
+        "name": "Skip"
+      },
+      "alle_pruefen": {
+        "name": "Check all"
+      },
+      "alle_benachrichtigen": {
+        "name": "Notify all"
+      }
+    },
+    "date": {
+      "naechste_faelligkeit": {
+        "name": "Next due date"
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Task Settings",
+        "data": {
+          "calendar_summary": "Calendar keyword",
+          "calendar_entity": "Calendar",
+          "event_days": "Due interval (days)",
+          "skip_days": "Postpone by days"
+        },
+        "data_description": {
+          "calendar_summary": "Name of the task – used as calendar event title and notification tag.",
+          "calendar_entity": "Calendar where completions are logged.",
+          "event_days": "After completing, the next due date is shifted by this many days.",
+          "skip_days": "When skipping, the next due date is shifted by this many days."
+        }
+      },
+      "notification": {
+        "title": "Notification Settings",
+        "data": {
+          "notification_title": "Title",
+          "notification_subject": "Short message",
+          "notification_message": "Detailed message",
+          "notification_channel": "Notification channel",
+          "notification_group": "Notification group",
+          "notification_tag": "Tag",
+          "notification_mdi_icon": "MDI icon",
+          "notification_visibility": "Lock screen visibility",
+          "notification_alert_once": "Alert once",
+          "notification_png_icon": "Notification icon (path)",
+          "notification_link": "Link",
+          "notification_script": "Notification script"
+        },
+        "data_description": {
+          "notification_tag": "Leave empty for automatic (= calendar keyword). Must be unique across all tasks.",
+          "notification_script": "Script called for sending the notification."
+        }
+      }
+    },
+    "error": {
+      "tag_not_unique": "This notification tag is already used by another task. Please choose a unique tag."
+    }
+  }
+}

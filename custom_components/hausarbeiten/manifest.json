@@ -1,0 +1,13 @@
+{
+  "domain": "hausarbeiten",
+  "name": "Hausarbeiten",
+  "version": "1.0.0",
+  "config_flow": true,
+  "dependencies": ["calendar"],
+  "requirements": [],
+  "codeowners": ["@Caroma97"],
+  "iot_class": "local_push",
+  "homeassistant": "2024.1.0",
+  "documentation": "https://github.com/Caroma97/HACS-Hausarbeiten",
+  "issue_tracker": "https://github.com/Caroma97/HACS-Hausarbeiten/issues"
+}
