@@ -1,6 +1,5 @@
 {
   "name": "Hausarbeiten",
   "homeassistant": "2024.1.0",
-  "country": "DE",
-  "icon": "https://github.com/Caroma97/HACS-Hausarbeiten/raw/main/custom_components/hausarbeiten/logo.png"
+  "country": "DE"
 }
