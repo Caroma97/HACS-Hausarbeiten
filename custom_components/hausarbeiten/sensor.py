@@ -7,7 +7,7 @@ from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from .const import DOMAIN, SIGNAL_STATE_CHANGED
+from .const import CONF_ENTRY_TYPE, DOMAIN, ENTRY_TYPE_HUB, SIGNAL_STATE_CHANGED
 from .coordinator import HausarbeitenCoordinator
 
 
@@ -16,14 +16,12 @@ async def async_setup_entry(
     entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
+    if entry.data.get(CONF_ENTRY_TYPE) == ENTRY_TYPE_HUB:
+        async_add_entities([HausarbeitenHubSensor(hass, entry)])
+        return
+
     coordinator: HausarbeitenCoordinator = hass.data[DOMAIN][entry.entry_id]
-    entities: list[SensorEntity] = [HausarbeitTageSensor(coordinator, entry)]
-
-    if "_hub_sensor_entry_id" not in hass.data[DOMAIN]:
-        hass.data[DOMAIN]["_hub_sensor_entry_id"] = entry.entry_id
-        entities.append(HausarbeitenHubSensor(hass, entry))
-
-    async_add_entities(entities)
+    async_add_entities([HausarbeitTageSensor(coordinator, entry)])
 
 
 class HausarbeitTageSensor(SensorEntity):

@@ -11,6 +11,7 @@ from homeassistant.helpers import selector
 from .const import (
     CONF_CALENDAR_ENTITY,
     CONF_CALENDAR_SUMMARY,
+    CONF_ENTRY_TYPE,
     CONF_EVENT_DAYS,
     CONF_NOTIFICATION_ALERT_ONCE,
     CONF_NOTIFICATION_CHANNEL,
@@ -35,6 +36,7 @@ from .const import (
     DEFAULT_NOTIFICATION_VISIBILITY,
     DEFAULT_SKIP_DAYS,
     DOMAIN,
+    ENTRY_TYPE_HUB,
 )
 
 
@@ -143,11 +145,19 @@ class HausarbeitenConfigFlow(ConfigFlow, domain=DOMAIN):
             data_schema=_aufgaben_schema({}),
         )
 
+    async def async_step_system(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
+        return self.async_create_entry(
+            title="Hausarbeiten",
+            data={CONF_ENTRY_TYPE: ENTRY_TYPE_HUB},
+        )
+
     async def async_step_notification(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
         errors: dict[str, str] = {}
         if user_input is not None:
             tag = user_input.get(CONF_NOTIFICATION_TAG) or self._data[CONF_CALENDAR_SUMMARY]
             for entry in self.hass.config_entries.async_entries(DOMAIN):
+                if entry.data.get(CONF_ENTRY_TYPE) == ENTRY_TYPE_HUB:
+                    continue
                 entry_tag = {**entry.data, **entry.options}.get(CONF_NOTIFICATION_TAG) or entry.data.get(CONF_CALENDAR_SUMMARY, "")
                 if entry_tag == tag:
                     errors[CONF_NOTIFICATION_TAG] = "tag_not_unique"
@@ -199,6 +209,8 @@ class HausarbeitenOptionsFlow(OptionsFlow):
             tag = user_input.get(CONF_NOTIFICATION_TAG) or self._current().get(CONF_CALENDAR_SUMMARY, "")
             for entry in self.hass.config_entries.async_entries(DOMAIN):
                 if entry.entry_id == self._config_entry.entry_id:
+                    continue
+                if entry.data.get(CONF_ENTRY_TYPE) == ENTRY_TYPE_HUB:
                     continue
                 entry_tag = {**entry.data, **entry.options}.get(CONF_NOTIFICATION_TAG) or entry.data.get(CONF_CALENDAR_SUMMARY, "")
                 if entry_tag == tag:

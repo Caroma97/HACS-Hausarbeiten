@@ -6,7 +6,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from .const import DOMAIN, SERVICE_BENACHRICHTIGEN, SERVICE_PRUEFEN
+from .const import CONF_ENTRY_TYPE, DOMAIN, ENTRY_TYPE_HUB, SERVICE_BENACHRICHTIGEN, SERVICE_PRUEFEN
 from .coordinator import HausarbeitenCoordinator
 
 
@@ -15,20 +15,18 @@ async def async_setup_entry(
     entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
-    coordinator: HausarbeitenCoordinator = hass.data[DOMAIN][entry.entry_id]
-    entities: list[ButtonEntity] = [
-        HausarbeitErledigtButton(coordinator, entry),
-        HausarbeitUeberspringenButton(coordinator, entry),
-    ]
-
-    if "_hub_button_entry_id" not in hass.data[DOMAIN]:
-        hass.data[DOMAIN]["_hub_button_entry_id"] = entry.entry_id
-        entities.extend([
+    if entry.data.get(CONF_ENTRY_TYPE) == ENTRY_TYPE_HUB:
+        async_add_entities([
             HausarbeitenHubPruefenButton(entry),
             HausarbeitenHubBenachrichtigenButton(entry),
         ])
+        return
 
-    async_add_entities(entities)
+    coordinator: HausarbeitenCoordinator = hass.data[DOMAIN][entry.entry_id]
+    async_add_entities([
+        HausarbeitErledigtButton(coordinator, entry),
+        HausarbeitUeberspringenButton(coordinator, entry),
+    ])
 
 
 class _HausarbeitButton(ButtonEntity):

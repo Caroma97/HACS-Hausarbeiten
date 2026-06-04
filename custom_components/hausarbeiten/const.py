@@ -45,3 +45,6 @@ CHECK_TIMES = [
 ]
 
 SIGNAL_STATE_CHANGED = f"{DOMAIN}_state_changed"
+
+CONF_ENTRY_TYPE = "entry_type"
+ENTRY_TYPE_HUB = "hub"

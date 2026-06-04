@@ -4,13 +4,15 @@ import logging
 
 import voluptuous as vol
 
-from homeassistant.config_entries import ConfigEntry
+from homeassistant.config_entries import SOURCE_SYSTEM, ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant, ServiceCall
-from homeassistant.helpers import config_validation as cv, device_registry as dr
+from homeassistant.helpers import config_validation as cv
 
 from .const import (
+    CONF_ENTRY_TYPE,
     DOMAIN,
+    ENTRY_TYPE_HUB,
     SERVICE_BENACHRICHTIGEN,
     SERVICE_FIELD_TITLE,
     SERVICE_PRUEFEN,
@@ -27,6 +29,8 @@ PLATFORMS: list[Platform] = [
     Platform.SENSOR,
     Platform.DATE,
 ]
+
+_HUB_PLATFORMS: list[Platform] = [Platform.BUTTON, Platform.SENSOR]
 
 
 async def async_setup(hass: HomeAssistant, config: dict) -> bool:
@@ -62,18 +66,25 @@ async def async_setup(hass: HomeAssistant, config: dict) -> bool:
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+    hass.data.setdefault(DOMAIN, {})
+
+    if entry.data.get(CONF_ENTRY_TYPE) == ENTRY_TYPE_HUB:
+        await hass.config_entries.async_forward_entry_setups(entry, _HUB_PLATFORMS)
+        return True
+
     coordinator = HausarbeitenCoordinator(hass, entry)
     await coordinator.async_setup()
-    hass.data.setdefault(DOMAIN, {})[entry.entry_id] = coordinator
+    hass.data[DOMAIN][entry.entry_id] = coordinator
 
-    dev_reg = dr.async_get(hass)
-    dev_reg.async_get_or_create(
-        config_entry_id=entry.entry_id,
-        identifiers={(DOMAIN, DOMAIN)},
-        name="Hausarbeiten",
-        manufacturer="Hausarbeiten",
-        model="Übersicht",
+    hub_exists = any(
+        e.data.get(CONF_ENTRY_TYPE) == ENTRY_TYPE_HUB
+        for e in hass.config_entries.async_entries(DOMAIN)
     )
+    if not hub_exists and "_hub_creating" not in hass.data[DOMAIN]:
+        hass.data[DOMAIN]["_hub_creating"] = True
+        hass.async_create_task(
+            hass.config_entries.flow.async_init(DOMAIN, context={"source": SOURCE_SYSTEM})
+        )
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     entry.async_on_unload(entry.add_update_listener(coordinator.async_config_updated))
@@ -81,14 +92,25 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+    if entry.data.get(CONF_ENTRY_TYPE) == ENTRY_TYPE_HUB:
+        if await hass.config_entries.async_unload_platforms(entry, _HUB_PLATFORMS):
+            hass.data[DOMAIN].pop("_hub_creating", None)
+            return True
+        return False
+
     if unload_ok := await hass.config_entries.async_unload_platforms(entry, PLATFORMS):
         coordinator: HausarbeitenCoordinator = hass.data[DOMAIN].pop(entry.entry_id)
         await coordinator.async_teardown()
-        domain_data = hass.data[DOMAIN]
-        if domain_data.get("_hub_sensor_entry_id") == entry.entry_id:
-            domain_data.pop("_hub_sensor_entry_id", None)
-        if domain_data.get("_hub_button_entry_id") == entry.entry_id:
-            domain_data.pop("_hub_button_entry_id", None)
+
+        remaining_tasks = [
+            e for e in hass.config_entries.async_entries(DOMAIN)
+            if e.data.get(CONF_ENTRY_TYPE) != ENTRY_TYPE_HUB and e.entry_id != entry.entry_id
+        ]
+        if not remaining_tasks:
+            for hub_entry in hass.config_entries.async_entries(DOMAIN):
+                if hub_entry.data.get(CONF_ENTRY_TYPE) == ENTRY_TYPE_HUB:
+                    hass.async_create_task(hass.config_entries.async_remove(hub_entry.entry_id))
+
     return unload_ok
 
 
