@@ -7,7 +7,7 @@ import voluptuous as vol
 from homeassistant.config_entries import SOURCE_SYSTEM, ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant, ServiceCall
-from homeassistant.helpers import config_validation as cv
+from homeassistant.helpers import config_validation as cv, device_registry as dr
 
 from .const import (
     CONF_ENTRY_TYPE,
@@ -75,6 +75,12 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     coordinator = HausarbeitenCoordinator(hass, entry)
     await coordinator.async_setup()
     hass.data[DOMAIN][entry.entry_id] = coordinator
+
+    # Veraltete Verknüpfung des Hub-Geräts mit diesem Task-Entry entfernen
+    dev_reg = dr.async_get(hass)
+    hub_device = dev_reg.async_get_device(identifiers={(DOMAIN, DOMAIN)})
+    if hub_device and entry.entry_id in hub_device.config_entries:
+        dev_reg.async_update_device(hub_device.id, remove_config_entry_id=entry.entry_id)
 
     hub_exists = any(
         e.data.get(CONF_ENTRY_TYPE) == ENTRY_TYPE_HUB
