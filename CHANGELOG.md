@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.3] - 2026-06-04
+
+### Fixed
+- Übersicht-Gerät ist jetzt ein vollständig eigenständiger Eintrag (eigener System-Config-Entry) und nicht mehr an Task-Geräte gebunden
+- Veraltete Verknüpfungen des Übersicht-Geräts mit Task-Entries werden beim Integration-Reload automatisch bereinigt
+
 ## [1.0.2] - 2026-06-04
 
 ### Fixed
