@@ -152,24 +152,14 @@ class HausarbeitenConfigFlow(ConfigFlow, domain=DOMAIN):
         )
 
     async def async_step_notification(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
-        errors: dict[str, str] = {}
         if user_input is not None:
-            tag = user_input.get(CONF_NOTIFICATION_TAG) or self._data[CONF_CALENDAR_SUMMARY]
-            for entry in self.hass.config_entries.async_entries(DOMAIN):
-                if entry.data.get(CONF_ENTRY_TYPE) == ENTRY_TYPE_HUB:
-                    continue
-                entry_tag = {**entry.data, **entry.options}.get(CONF_NOTIFICATION_TAG) or entry.data.get(CONF_CALENDAR_SUMMARY, "")
-                if entry_tag == tag:
-                    errors[CONF_NOTIFICATION_TAG] = "tag_not_unique"
-                    break
-            if not errors:
-                if not user_input.get(CONF_NOTIFICATION_TAG):
-                    user_input[CONF_NOTIFICATION_TAG] = self._data[CONF_CALENDAR_SUMMARY]
-                if not user_input.get(CONF_NOTIFICATION_TITLE):
-                    user_input[CONF_NOTIFICATION_TITLE] = self._data[CONF_CALENDAR_SUMMARY]
-                self._data.update(user_input)
-                title = self._data.get(CONF_NOTIFICATION_TITLE) or self._data[CONF_CALENDAR_SUMMARY]
-                return self.async_create_entry(title=title, data=self._data)
+            if not user_input.get(CONF_NOTIFICATION_TAG):
+                user_input[CONF_NOTIFICATION_TAG] = self._data[CONF_CALENDAR_SUMMARY]
+            if not user_input.get(CONF_NOTIFICATION_TITLE):
+                user_input[CONF_NOTIFICATION_TITLE] = self._data[CONF_CALENDAR_SUMMARY]
+            self._data.update(user_input)
+            title = self._data.get(CONF_NOTIFICATION_TITLE) or self._data[CONF_CALENDAR_SUMMARY]
+            return self.async_create_entry(title=title, data=self._data)
 
         return self.async_show_form(
             step_id="notification",
@@ -177,7 +167,6 @@ class HausarbeitenConfigFlow(ConfigFlow, domain=DOMAIN):
                 CONF_NOTIFICATION_TITLE: self._data.get(CONF_CALENDAR_SUMMARY, ""),
                 CONF_NOTIFICATION_TAG: self._data.get(CONF_CALENDAR_SUMMARY, ""),
             }),
-            errors=errors,
         )
 
     @staticmethod
@@ -204,26 +193,13 @@ class HausarbeitenOptionsFlow(OptionsFlow):
         )
 
     async def async_step_notification(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
-        errors: dict[str, str] = {}
         if user_input is not None:
-            tag = user_input.get(CONF_NOTIFICATION_TAG) or self._current().get(CONF_CALENDAR_SUMMARY, "")
-            for entry in self.hass.config_entries.async_entries(DOMAIN):
-                if entry.entry_id == self._config_entry.entry_id:
-                    continue
-                if entry.data.get(CONF_ENTRY_TYPE) == ENTRY_TYPE_HUB:
-                    continue
-                entry_tag = {**entry.data, **entry.options}.get(CONF_NOTIFICATION_TAG) or entry.data.get(CONF_CALENDAR_SUMMARY, "")
-                if entry_tag == tag:
-                    errors[CONF_NOTIFICATION_TAG] = "tag_not_unique"
-                    break
-            if not errors:
-                self._data.update(user_input)
-                current = self._current()
-                new_title = self._data.get(CONF_NOTIFICATION_TITLE) or current.get(CONF_CALENDAR_SUMMARY, "")
-                self.hass.config_entries.async_update_entry(self._config_entry, title=new_title)
-                return self.async_create_entry(data=self._data)
+            self._data.update(user_input)
+            current = self._current()
+            new_title = self._data.get(CONF_NOTIFICATION_TITLE) or current.get(CONF_CALENDAR_SUMMARY, "")
+            self.hass.config_entries.async_update_entry(self._config_entry, title=new_title)
+            return self.async_create_entry(data=self._data)
         return self.async_show_form(
             step_id="notification",
             data_schema=_notification_schema({**self._current(), **self._data}),
-            errors=errors,
         )

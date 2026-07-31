@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.5] - 2026-07-31
+
+### Changed
+- Benachrichtigungs-Tags müssen nicht mehr eindeutig sein – mehrere Aufgaben dürfen denselben Tag verwenden (z. B. um Benachrichtigungen zu gruppieren/zu überschreiben)
+
 ## [1.0.4] - 2026-07-31
 
 ### Changed

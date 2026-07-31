@@ -39,9 +39,6 @@
           "notification_script": "Script called for sending the notification."
         }
       }
-    },
-    "error": {
-      "tag_not_unique": "This notification tag is already used by another task. Please choose a unique tag."
     }
   },
   "entity": {
@@ -116,9 +113,6 @@
           "notification_script": "Script called for sending the notification."
         }
       }
-    },
-    "error": {
-      "tag_not_unique": "This notification tag is already used by another task. Please choose a unique tag."
     }
   }
 }

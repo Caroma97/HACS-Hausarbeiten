@@ -39,9 +39,6 @@
           "notification_script": "Skript, das für die Benachrichtigung aufgerufen wird."
         }
       }
-    },
-    "error": {
-      "tag_not_unique": "Dieser Benachrichtigungs-Tag wird bereits von einer anderen Aufgabe verwendet. Bitte einen eindeutigen Tag wählen."
     }
   },
   "entity": {
@@ -116,9 +113,6 @@
           "notification_script": "Skript, das für die Benachrichtigung aufgerufen wird."
         }
       }
-    },
-    "error": {
-      "tag_not_unique": "Dieser Benachrichtigungs-Tag wird bereits von einer anderen Aufgabe verwendet. Bitte einen eindeutigen Tag wählen."
     }
   }
 }
