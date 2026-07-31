@@ -56,7 +56,7 @@ def _aufgaben_schema(defaults: dict[str, Any]) -> vol.Schema:
             CONF_EVENT_DAYS,
             default=defaults.get(CONF_EVENT_DAYS, DEFAULT_EVENT_DAYS),
         ): selector.NumberSelector(
-            selector.NumberSelectorConfig(min=1, max=100, unit_of_measurement="Tage", mode=selector.NumberSelectorMode.BOX)
+            selector.NumberSelectorConfig(min=1, max=365, unit_of_measurement="Tage", mode=selector.NumberSelectorMode.BOX)
         ),
         vol.Optional(
             CONF_SKIP_DAYS,

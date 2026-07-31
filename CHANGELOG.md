@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.4] - 2026-07-31
+
+### Changed
+- Maximales Fälligkeitsintervall von 100 auf 365 Tage erhöht (ermöglicht z. B. jährliche Aufgaben)
+
 ## [1.0.3] - 2026-06-04
 
 ### Fixed
