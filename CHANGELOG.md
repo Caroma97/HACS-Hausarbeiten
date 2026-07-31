@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.6] - 2026-07-31
+
+### Added
+- Benachrichtigungs-Titel, -Betreff und -Nachricht unterstützen jetzt Jinja-Templates (z. B. `{{ states('sensor.<aufgabe>_tage_seit_erledigung') }}`), sodass Sensorwerte direkt in den Text eingesetzt werden können
+
 ## [1.0.5] - 2026-07-31
 
 ### Changed

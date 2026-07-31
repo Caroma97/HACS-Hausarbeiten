@@ -10,6 +10,7 @@ from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.dispatcher import async_dispatcher_send
 from homeassistant.helpers.event import async_track_time_change
 from homeassistant.helpers.storage import Store
+from homeassistant.helpers.template import Template
 from homeassistant.util import dt as dt_util
 
 from .const import (
@@ -170,6 +171,16 @@ class HausarbeitenCoordinator:
         self._notify_listeners()
         await self._send_notification()
 
+    def _render(self, value: str) -> str:
+        """Jinja-Template im Text rendern; bei Fehler unverändert zurückgeben."""
+        if not value or "{" not in value:
+            return value
+        try:
+            return Template(value, self.hass).async_render(parse_result=False)
+        except Exception as err:
+            _LOGGER.warning("Benachrichtigungs-Template konnte nicht gerendert werden: %s", err)
+            return value
+
     async def _send_notification(self) -> None:
         parts = self.notification_script.split(".", 1)
         if len(parts) != 2:
@@ -187,9 +198,9 @@ class HausarbeitenCoordinator:
                     "notification_mdi_icon": self.notification_mdi_icon,
                     "notification_visibility": self.notification_visibility,
                     "notification_alert_once": self.notification_alert_once,
-                    "notification_title": self.notification_title,
-                    "notification_subject": self.notification_subject,
-                    "notification_message": self.notification_message,
+                    "notification_title": self._render(self.notification_title),
+                    "notification_subject": self._render(self.notification_subject),
+                    "notification_message": self._render(self.notification_message),
                     "notification_png_icon": self.notification_png_icon,
                     "notification_link": self.notification_link,
                     "notification_actions": [
